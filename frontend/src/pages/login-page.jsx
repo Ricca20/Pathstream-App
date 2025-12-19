@@ -1,25 +1,28 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const LoginPage = ({ onRegisterClick }) => {
+const LoginPage = ({ onRegisterClick, onLoginSuccess }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post("http://localhost:5001/api/auth/login", {
-                email,
-                password,
+            const { data } = await axios.post("http://127.0.0.1:5001/api/auth/login", {
+                email: email.trim(),
+                password: password.trim(),
             });
 
             localStorage.setItem("userInfo", JSON.stringify(data));
-            alert("Login successful!");
-            console.log("Logged in user:", data);
-            // Redirect or update app state here
+            // alert("Login successful!");
+            if (onLoginSuccess) {
+                onLoginSuccess(data);
+            }
         } catch (error) {
             console.error("Error:", error);
-            alert(error.response?.data?.message || "Login failed");
+            // Alert more details if it's not a response error (e.g. Network Error)
+            const msg = error.response?.data?.message || error.message || "Login failed";
+            alert(`Login Error: ${msg}`);
         }
     };
 

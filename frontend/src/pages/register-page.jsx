@@ -15,7 +15,7 @@ const RegisterPage = ({ onLoginClick }) => {
         }
 
         try {
-            const { data } = await axios.post("http://localhost:5001/api/auth/register", {
+            const { data } = await axios.post("http://127.0.0.1:5001/api/auth/register", {
                 name,
                 email,
                 password,
