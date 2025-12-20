@@ -2,24 +2,13 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-import { validationResult } from "express-validator";
-
-// Generate JWT
 const generateToken = (id, role) => {
     return jwt.sign({ id, role }, process.env.JWT_SECRET, {
         expiresIn: "30d",
     });
 };
 
-// @desc    Register new user
-// @route   POST /api/auth/register
-// @access  Public
 export const registerUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errors.array()[0].msg });
-    }
-
     const { name, email, password } = req.body;
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -30,7 +19,6 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -38,6 +26,7 @@ export const registerUser = async (req, res) => {
             name,
             email: normalizedEmail,
             password: hashedPassword,
+            role: req.body.role || 'student'
         });
 
         if (user) {
@@ -56,16 +45,7 @@ export const registerUser = async (req, res) => {
     }
 };
 
-
-// @desc    Authenticate a user
-// @route   POST /api/auth/login
-// @access  Public
 export const loginUser = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errors.array()[0].msg });
-    }
-
     const { email, password } = req.body;
     const normalizedEmail = email.toLowerCase().trim();
 

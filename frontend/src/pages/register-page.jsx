@@ -6,6 +6,7 @@ const RegisterPage = ({ onLoginClick }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [role, setRole] = useState("student");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,6 +20,7 @@ const RegisterPage = ({ onLoginClick }) => {
                 name,
                 email,
                 password,
+                role
             });
 
             alert("Registration successful! Please login.");
@@ -43,6 +45,32 @@ const RegisterPage = ({ onLoginClick }) => {
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <input type="hidden" name="remember" value="true" />
                     <div className="space-y-4">
+                        {/* Role Selector */}
+                        <div>
+                            <label htmlFor="role" className="sr-only">I am a</label>
+                            <div className="flex gap-4 mb-4">
+                                <button
+                                    type="button"
+                                    onClick={() => setRole('student')}
+                                    className={`flex-1 py-3 px-4 rounded-lg border text-sm font-medium transition-all ${role === 'student'
+                                        ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm'
+                                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                        }`}
+                                >
+                                    Student
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setRole('instructor')}
+                                    className={`flex-1 py-3 px-4 rounded-lg border text-sm font-medium transition-all ${role === 'instructor'
+                                        ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-sm'
+                                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                        }`}
+                                >
+                                    Instructor
+                                </button>
+                            </div>
+                        </div>
                         <div>
                             <label htmlFor="name" className="sr-only">Full Name</label>
                             <div className="relative">

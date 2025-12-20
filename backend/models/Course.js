@@ -13,9 +13,6 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  thumbnail: {
-    type: String, // URL to image
-  },
   category: {
     type: String,
     required: true,
@@ -24,6 +21,10 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ['Beginner', 'Intermediate', 'Advanced']
+  },
+  duration: {
+    type: String,
+    required: true, 
   },
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,9 +36,13 @@ const courseSchema = new mongoose.Schema({
     ref: "User"
   }],
   modules: [{
-    title: String,
-    content: String, 
-    duration: String
+    title: {
+      type: String,
+      required: true
+    },
+    description: String,
+    duration: String, 
+    content: String
   }]
 }, {
   timestamps: true

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
 
 const CourseDetailsPage = ({ user, courseId, onBack }) => {
     const [course, setCourse] = useState(null);
@@ -21,17 +22,6 @@ const CourseDetailsPage = ({ user, courseId, onBack }) => {
                 setCourse(response.data);
 
                 // Check if user is already enrolled
-                // We can check this by seeing if the user's ID is in the course's students list 
-                // OR by fetching enrolled courses. 
-                // Since the backend 'getCourseById' might not return the full students list for privacy,
-                // or we might want to check the 'my-courses' list.
-                // However, the current Course model and controller 'getCourseById' returns the course document.
-                // If the user is authorized, they might see it.
-                // Let's rely on a separate check or if the course object has it.
-                // Actually, let's just try to enroll and handle the "already enrolled" error, OR
-                // checking the 'students' array if it's available and populates just IDs.
-                // For a cleaner UI, let's fetch 'my-courses' to see if this ID is there, or just rely on the button action.
-                // Better: Check if `response.data.students` includes `user._id`.
                 if (response.data.students && response.data.students.includes(user._id)) {
                     setEnrolled(true);
                 }
@@ -88,19 +78,14 @@ const CourseDetailsPage = ({ user, courseId, onBack }) => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Navbar */}
-            <nav className="bg-white shadow-sm sticky top-0 z-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16 items-center">
-                        <div className="flex items-center cursor-pointer" onClick={onBack}>
-                            <svg className="w-6 h-6 text-gray-500 mr-2 hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            <span className="text-lg font-medium text-gray-900">Back to Dashboard</span>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+            <Navbar
+                user={user}
+                onLogout={() => { }}
+                currentPage="course-details"
+                onViewCourses={onBack}
+                onViewMyCourses={() => { }}
+                onViewInstructorDashboard={() => { }}
+            />
 
             <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
                 {/* Header Section */}

@@ -99,9 +99,13 @@ const LoginPage = ({ onRegisterClick, onLoginSuccess }) => {
                         </div>
 
                         <div className="text-sm">
-                            <a href="#" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                            <button
+                                type="button"
+                                className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                                onClick={(e) => e.preventDefault()}
+                            >
                                 Forgot your password?
-                            </a>
+                            </button>
                         </div>
                     </div>
 
