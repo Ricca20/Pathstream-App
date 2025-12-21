@@ -32,7 +32,8 @@ const RegisterPage = () => {
             navigate('/login');
         } catch (error) {
             console.error("Error:", error);
-            toast.error(error.response?.data?.message || "Registration failed");
+            toast.error(error.response?.data?.message || error.message || "Registration failed");
+            console.error("Full Error Object:", error);
         }
     };
 
