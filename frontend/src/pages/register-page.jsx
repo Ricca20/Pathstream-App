@@ -21,7 +21,6 @@ const RegisterPage = () => {
         }
 
         try {
-            console.log("ATTEMPT REGISTRATION (v2) with URL:", `'${API_URL}'`);
             const { data } = await axios.post(`${API_URL}/api/auth/register`, {
                 name,
                 email,
@@ -33,8 +32,7 @@ const RegisterPage = () => {
             navigate('/login');
         } catch (error) {
             console.error("Error:", error);
-            toast.error(error.response?.data?.message || error.message || "Registration failed");
-            console.error("Full Error Object:", error);
+            toast.error(error.response?.data?.message || "Registration failed");
         }
     };
 

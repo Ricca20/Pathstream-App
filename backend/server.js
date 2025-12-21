@@ -22,10 +22,6 @@ app.get('/', (req, res) => {
     res.json({ message: 'API is running...' });
 });
 
-app.get('/api/test', (req, res) => {
-    res.json({ message: 'Backend is connected!', mongoEnv: process.env.MONGO_URI ? 'Set' : 'Not Set' });
-});
-
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/ai', aiRoutes);
