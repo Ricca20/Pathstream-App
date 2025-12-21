@@ -40,11 +40,11 @@ const HomePage = () => {
                         {/* Instructor Home Page Content */}
                         <InstructorHeroSection />
                         <InstructorFeaturesSection />
-                        <InstructorStatisticsSection 
-                            userId={user._id} 
+                        <InstructorStatisticsSection
+                            userId={user._id}
                             token={user.token}
                         />
-                        <InstructorCTASection 
+                        <InstructorCTASection
                             onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
                         />
                         <InstructorFooterMessage />
