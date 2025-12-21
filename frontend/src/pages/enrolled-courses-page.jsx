@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
-const EnrolledCoursesPage = ({ user, onLogout, onViewHome, onViewCourses, onViewInstructorDashboard }) => {
+const EnrolledCoursesPage = () => {
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,12 +36,12 @@ const EnrolledCoursesPage = ({ user, onLogout, onViewHome, onViewCourses, onView
         <div className="min-h-screen bg-gray-50">
             <Navbar
                 user={user}
-                onLogout={onLogout}
+                onLogout={logout}
                 currentPage="enrollments"
-                onViewHome={onViewHome}
-                onViewCourses={onViewCourses}
-                onViewMyCourses={() => { }}
-                onViewInstructorDashboard={onViewInstructorDashboard}
+                onViewHome={() => navigate('/home')}
+                onViewCourses={() => navigate('/courses')}
+                onViewMyCourses={() => navigate('/my-courses')}
+                onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
             />
 
             <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">

@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
-const InstructorDashboard = ({ user, onLogout, onViewHome, onViewCourses }) => {
+const InstructorDashboard = () => {
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const [myCourses, setMyCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -38,7 +42,7 @@ const InstructorDashboard = ({ user, onLogout, onViewHome, onViewCourses }) => {
 
     const fetchInstructorCourses = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5001/api/courses');
+            const response = await axios.get('http://127.0.0.1:5001/api/courses/all');
             const taughtCourses = response.data.filter(course =>
                 course.instructor && (course.instructor._id === user._id || course.instructor === user._id)
             );
@@ -98,11 +102,11 @@ const InstructorDashboard = ({ user, onLogout, onViewHome, onViewCourses }) => {
 
             if (editingCourse) {
                 // Update
-                await axios.put(`http://127.0.0.1:5001/api/courses/${editingCourse._id}`, formData, config);
+                await axios.put(`http://127.0.0.1:5001/api/courses/${editingCourse._id}/update`, formData, config);
                 alert("Course updated successfully!");
             } else {
                 // Create
-                await axios.post('http://127.0.0.1:5001/api/courses', formData, config);
+                await axios.post('http://127.0.0.1:5001/api/courses/create', formData, config);
                 alert("Course created successfully!");
             }
 
@@ -123,7 +127,7 @@ const InstructorDashboard = ({ user, onLogout, onViewHome, onViewCourses }) => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.delete(`http://127.0.0.1:5001/api/courses/${courseId}`, config);
+            await axios.delete(`http://127.0.0.1:5001/api/courses/${courseId}/delete`, config);
             setMyCourses(myCourses.filter(c => c._id !== courseId));
             alert("Course deleted successfully");
         } catch (error) {
@@ -162,12 +166,12 @@ const InstructorDashboard = ({ user, onLogout, onViewHome, onViewCourses }) => {
         <div className="min-h-screen bg-gray-50">
             <Navbar
                 user={user}
-                onLogout={onLogout}
-                currentPage="instructor"
-                onViewHome={onViewHome}
-                onViewCourses={onViewCourses}
-                onViewMyCourses={() => { }}
-                onViewInstructorDashboard={() => { }}
+                onLogout={logout}
+                currentPage="courses"
+                onViewHome={() => navigate('/home')}
+                onViewCourses={() => navigate('/courses')}
+                onViewMyCourses={() => navigate('/my-courses')}
+                onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
             />
 
             {/* Content */}

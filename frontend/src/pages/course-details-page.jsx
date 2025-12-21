@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
-const CourseDetailsPage = ({ user, courseId, onBack }) => {
+const CourseDetailsPage = () => {
+    const { id: courseId } = useParams();
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -18,7 +23,7 @@ const CourseDetailsPage = ({ user, courseId, onBack }) => {
                 };
 
                 // Fetch course details
-                const response = await axios.get(`http://127.0.0.1:5001/api/courses/${courseId}`, config);
+                const response = await axios.get(`http://127.0.0.1:5001/api/courses/${courseId}/details`, config);
                 setCourse(response.data);
 
                 // Check if user is already enrolled
@@ -71,7 +76,7 @@ const CourseDetailsPage = ({ user, courseId, onBack }) => {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
                 <div className="text-red-500 text-xl">{error || "Course not found"}</div>
-                <button onClick={onBack} className="mt-4 text-blue-600 hover:underline">Back to Dashboard</button>
+                <button onClick={() => navigate('/courses')} className="mt-4 text-blue-600 hover:underline">Back to Dashboard</button>
             </div>
         );
     }
@@ -80,11 +85,12 @@ const CourseDetailsPage = ({ user, courseId, onBack }) => {
         <div className="min-h-screen bg-gray-50">
             <Navbar
                 user={user}
-                onLogout={() => { }}
+                onLogout={logout}
                 currentPage="course-details"
-                onViewCourses={onBack}
-                onViewMyCourses={() => { }}
-                onViewInstructorDashboard={() => { }}
+                onViewCourses={() => navigate('/courses')}
+                onViewHome={() => navigate('/home')}
+                onViewMyCourses={() => navigate('/my-courses')}
+                onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
             />
 
             <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">

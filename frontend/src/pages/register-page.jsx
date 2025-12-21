@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const RegisterPage = ({ onLoginClick }) => {
+const RegisterPage = () => {
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,7 +26,7 @@ const RegisterPage = ({ onLoginClick }) => {
             });
 
             alert("Registration successful! Please login.");
-            onLoginClick();
+            navigate('/login');
         } catch (error) {
             console.error("Error:", error);
             alert(error.response?.data?.message || "Registration failed");
@@ -172,7 +174,7 @@ const RegisterPage = ({ onLoginClick }) => {
                             Already have an account?{' '}
                             <button
                                 type="button"
-                                onClick={onLoginClick}
+                                onClick={() => navigate('/login')}
                                 className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none underline transition-colors"
                             >
                                 Sign in

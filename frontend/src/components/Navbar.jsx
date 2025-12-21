@@ -18,7 +18,8 @@ const Navbar = ({
                         onClick={onViewHome}
                     >
                         <h1 className="text-2xl font-bold text-blue-600">
-                            PathStream
+                            Path
+                            <span className="text-gray-900">Stream</span>
                             {currentPage === 'instructor' && (
                                 <span className="text-gray-500 text-sm font-normal"> | Instructor</span>
                             )}
@@ -62,7 +63,11 @@ const Navbar = ({
                                     Home
                                 </button>
                                 <button
-                                    onClick={currentPage !== 'courses' ? onViewCourses : undefined}
+                                    onClick={
+                                        isInstructor
+                                            ? onViewInstructorDashboard
+                                            : (currentPage !== 'courses' ? onViewCourses : undefined)
+                                    }
                                     className={`${
                                         currentPage === 'courses'
                                             ? 'text-blue-600 font-bold cursor-default'
@@ -80,14 +85,6 @@ const Navbar = ({
                                             } transition-colors`}
                                     >
                                         My Enrollments
-                                    </button>
-                                )}
-                                {isInstructor && (
-                                    <button
-                                        onClick={onViewInstructorDashboard}
-                                        className="text-purple-600 hover:text-purple-800 font-medium transition-colors"
-                                    >
-                                        Dashboard
                                     </button>
                                 )}
                                 <button

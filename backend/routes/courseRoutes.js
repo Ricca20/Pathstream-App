@@ -12,10 +12,14 @@ import {
 } from '../controllers/courseController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
-router.route('/').get(getCourses).post(protect, createCourse);
-router.route('/my-courses').get(protect, getMyEnrolledCourses);
-router.route('/:id').get(getCourse).put(protect, updateCourse).delete(protect, deleteCourse);
-router.route('/:id/students').get(protect, getCourseStudents);
-router.route('/:id/enroll').post(protect, enrollCourse);
+
+router.get('/all', getCourses);
+router.post('/create', protect, createCourse);
+router.get('/my-courses', protect, getMyEnrolledCourses);
+router.get('/:id/details', getCourse);
+router.put('/:id/update', protect, updateCourse);
+router.delete('/:id/delete', protect, deleteCourse);
+router.get('/:id/students', protect, getCourseStudents);
+router.post('/:id/enroll', protect, enrollCourse);
 
 export default router;

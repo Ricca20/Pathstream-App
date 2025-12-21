@@ -1,7 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
-const LoginPage = ({ onRegisterClick, onLoginSuccess }) => {
+const LoginPage = () => {
+    const navigate = useNavigate();
+    const { login } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,10 +18,8 @@ const LoginPage = ({ onRegisterClick, onLoginSuccess }) => {
             });
 
             localStorage.setItem("userInfo", JSON.stringify(data));
-            // alert("Login successful!");
-            if (onLoginSuccess) {
-                onLoginSuccess(data);
-            }
+            login(data);
+            navigate('/home');
         } catch (error) {
             console.error("Error:", error);
             // Alert more details if it's not a response error (e.g. Network Error)
@@ -123,7 +125,7 @@ const LoginPage = ({ onRegisterClick, onLoginSuccess }) => {
                             Don't have an account?{' '}
                             <button
                                 type="button"
-                                onClick={onRegisterClick}
+                                onClick={() => navigate('/register')}
                                 className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none underline transition-colors"
                             >
                                 Sign up

@@ -1,16 +1,88 @@
-# React + Vite
+# PathStream Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React frontend for the PathStream online learning platform built with Vite.
 
-Currently, two official plugins are available:
+## Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+frontend/src/
+├── components/          # Reusable UI components
+│   ├── home/           # Home page components
+│   ├── Chatbot.jsx     # AI chatbot component
+│   ├── Layout.jsx      # Common layout wrapper
+│   ├── Navbar.jsx      # Navigation bar
+│   └── ProtectedRoute.jsx  # Route protection
+├── context/            # React Context
+│   └── AuthContext.jsx # Authentication state management
+├── pages/              # Page components
+│   ├── login-page.jsx
+│   ├── register-page.jsx
+│   ├── home-page.jsx
+│   ├── dashboard-page.jsx
+│   ├── enrolled-courses-page.jsx
+│   ├── instructor-dashboard.jsx
+│   └── course-details-page.jsx
+├── App.jsx             # Main app with routing
+├── main.jsx            # App entry point
+└── index.css           # Global styles
+```
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Authentication System
+- **AuthContext**: Global auth state with localStorage persistence
+- **ProtectedRoute**: Guards authenticated routes
+- **Login/Register**: JWT-based authentication
 
-## Expanding the ESLint configuration
+### Routing (React Router v6)
+- `/login` - Login page
+- `/register` - Registration page
+- `/home` - Home page (protected)
+- `/courses` - Browse courses (protected)
+- `/my-courses` - Enrolled courses (protected)
+- `/instructor-dashboard` - Instructor dashboard (protected)
+- `/course/:id` - Course details (protected)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Components
+
+#### Layout Components
+- **Navbar**: Dynamic navigation based on user role
+- **Layout**: Wraps pages with common elements (Chatbot)
+- **ProtectedRoute**: Redirects unauthenticated users to login
+
+#### Home Page Components
+Student view:
+- HeroSection, FeaturesSection, CTASection
+- LearningJourney, StatisticsSection, FooterMessage
+
+Instructor view:
+- InstructorHeroSection, InstructorFeaturesSection
+- InstructorCTASection, InstructorStatisticsSection
+- InstructorFooterMessage
+
+#### Chatbot
+- AI-powered course advisor
+- Real-time recommendations
+- Clean, modern UI with light blue theme
+
+## Running the Application
+
+```bash
+npm install
+npm run dev
+```
+
+Application will run on `http://localhost:5173`
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+## Technologies
+- React 18 with Vite
+- React Router v6
+- Tailwind CSS
+- Axios for API calls
+- Context API for state management
