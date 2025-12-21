@@ -123,4 +123,3 @@ const InstructorStatisticsSection = ({ userId, token }) => {
 };
 
 export default InstructorStatisticsSection;
-```
