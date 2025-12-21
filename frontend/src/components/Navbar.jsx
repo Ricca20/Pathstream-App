@@ -26,73 +26,88 @@ const Navbar = ({
                         </h1>
                     </div>
                     <div className="flex items-center space-x-4">
-                        {currentPage === 'instructor' ? (
-                            <>
-                                <button
-                                    onClick={onViewHome}
-                                    className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                                >
-                                    Home
-                                </button>
-                                <button
-                                    onClick={onViewCourses}
-                                    className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
-                                >
-                                    Courses
-                                </button>
-                                <div className="h-6 w-px bg-gray-300 mx-2"></div>
-                                <span className="text-gray-700 font-medium">{user?.name}</span>
-                                <button
-                                    onClick={onLogout}
-                                    className="ml-4 bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                                >
-                                    Logout
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <span className="text-gray-700">Welcome, {user?.name || 'User'}!</span>
-                                <button
-                                    onClick={currentPage !== 'home' ? onViewHome : undefined}
-                                    className={`${
-                                        currentPage === 'home'
-                                            ? 'text-blue-600 font-bold cursor-default'
-                                            : 'text-blue-600 hover:text-blue-800 font-medium'
-                                    } transition-colors`}
-                                >
-                                    Home
-                                </button>
-                                <button
-                                    onClick={
-                                        isInstructor
-                                            ? onViewInstructorDashboard
-                                            : (currentPage !== 'courses' ? onViewCourses : undefined)
-                                    }
-                                    className={`${
-                                        currentPage === 'courses'
-                                            ? 'text-blue-600 font-bold cursor-default'
-                                            : 'text-blue-600 hover:text-blue-800 font-medium'
-                                    } transition-colors`}
-                                >
-                                    Courses
-                                </button>
-                                {!isInstructor && (
+                        {user ? (
+                            currentPage === 'instructor' ? (
+                                <>
                                     <button
-                                        onClick={currentPage !== 'enrollments' ? onViewMyCourses : undefined}
-                                        className={`${currentPage === 'enrollments'
-                                                ? 'text-blue-600 font-bold cursor-default'
-                                                : 'text-blue-600 hover:text-blue-800 font-medium'
+                                        onClick={onViewHome}
+                                        className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                                    >
+                                        Home
+                                    </button>
+                                    <button
+                                        onClick={onViewCourses}
+                                        className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                                    >
+                                        Courses
+                                    </button>
+                                    <div className="h-6 w-px bg-gray-300 mx-2"></div>
+                                    <span className="text-gray-700 font-medium">{user.name}</span>
+                                    <button
+                                        onClick={onLogout}
+                                        className="ml-4 bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="text-gray-700">Welcome, {user.name}!</span>
+                                    <button
+                                        onClick={currentPage !== 'home' ? onViewHome : undefined}
+                                        className={`${currentPage === 'home'
+                                            ? 'text-blue-600 font-bold cursor-default'
+                                            : 'text-blue-600 hover:text-blue-800 font-medium'
                                             } transition-colors`}
                                     >
-                                        My Enrollments
+                                        Home
                                     </button>
-                                )}
-                                <button
-                                    onClick={onLogout}
-                                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                                    <button
+                                        onClick={
+                                            isInstructor
+                                                ? onViewInstructorDashboard
+                                                : (currentPage !== 'courses' ? onViewCourses : undefined)
+                                        }
+                                        className={`${currentPage === 'courses'
+                                            ? 'text-blue-600 font-bold cursor-default'
+                                            : 'text-blue-600 hover:text-blue-800 font-medium'
+                                            } transition-colors`}
+                                    >
+                                        Courses
+                                    </button>
+                                    {!isInstructor && (
+                                        <button
+                                            onClick={currentPage !== 'enrollments' ? onViewMyCourses : undefined}
+                                            className={`${currentPage === 'enrollments'
+                                                ? 'text-blue-600 font-bold cursor-default'
+                                                : 'text-blue-600 hover:text-blue-800 font-medium'
+                                                } transition-colors`}
+                                        >
+                                            My Enrollments
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={onLogout}
+                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            )
+                        ) : (
+                            <>
+                                <a
+                                    href="/login"
+                                    className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
                                 >
-                                    Logout
-                                </button>
+                                    Login
+                                </a>
+                                <a
+                                    href="/register"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors shadow-sm"
+                                >
+                                    Register
+                                </a>
                             </>
                         )}
                     </div>

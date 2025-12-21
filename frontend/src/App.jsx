@@ -19,10 +19,10 @@ function App() {
     <AuthProvider>
       <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/home" element={<ProtectedRoute><Layout><HomePage /></Layout></ProtectedRoute>} />
         <Route path="/courses" element={<ProtectedRoute><Layout><DashboardPage /></Layout></ProtectedRoute>} />
         <Route path="/my-courses" element={<ProtectedRoute><Layout><EnrolledCoursesPage /></Layout></ProtectedRoute>} />
         <Route path="/instructor-dashboard" element={<ProtectedRoute><Layout><InstructorDashboard /></Layout></ProtectedRoute>} />

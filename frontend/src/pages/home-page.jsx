@@ -41,8 +41,8 @@ const HomePage = () => {
                         <InstructorHeroSection />
                         <InstructorFeaturesSection />
                         <InstructorStatisticsSection
-                            userId={user._id}
-                            token={user.token}
+                            userId={user?._id}
+                            token={user?.token}
                         />
                         <InstructorCTASection
                             onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
@@ -51,12 +51,14 @@ const HomePage = () => {
                     </>
                 ) : (
                     <>
-                        {/* Student Home Page Content */}
+                        {/* Student/Guest Home Page Content */}
                         <HeroSection />
 
-                        <div className="mb-12">
-                            <LearningJourney enrolledCount={0} />
-                        </div>
+                        {user && (
+                            <div className="mb-12">
+                                <LearningJourney enrolledCount={0} />
+                            </div>
+                        )}
 
                         <FeaturesSection />
 
@@ -65,6 +67,7 @@ const HomePage = () => {
                             onViewCourses={() => navigate('/courses')}
                             onViewMyCourses={() => navigate('/my-courses')}
                             onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
+                            user={user} // Pass user to handle "Get Started" logic
                         />
 
                         <StatisticsSection />
