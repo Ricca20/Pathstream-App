@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import toast from 'react-hot-toast';
+
 const RegisterPage = () => {
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -13,7 +15,7 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
@@ -25,11 +27,11 @@ const RegisterPage = () => {
                 role
             });
 
-            alert("Registration successful! Please login.");
+            toast.success("Registration successful! Please login.");
             navigate('/login');
         } catch (error) {
             console.error("Error:", error);
-            alert(error.response?.data?.message || "Registration failed");
+            toast.error(error.response?.data?.message || "Registration failed");
         }
     };
 

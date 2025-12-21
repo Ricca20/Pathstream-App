@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Chatbot from '../components/Chatbot';
 
+import toast from 'react-hot-toast';
+
 const DashboardPage = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
@@ -39,12 +41,12 @@ const DashboardPage = () => {
                 },
             };
             await axios.post(`http://127.0.0.1:5001/api/courses/${courseId}/enroll`, {}, config);
-            alert("Enrollment successful!");
+            toast.success("Enrollment successful!");
             setSelectedCourse(null); // Close modal if open
         } catch (error) {
             console.error("Enrollment error:", error);
             const msg = error.response?.data?.message || "Enrollment failed";
-            alert(msg);
+            toast.error(msg);
         }
     };
 
@@ -62,7 +64,7 @@ const DashboardPage = () => {
     // Calculate stats
     const totalCourses = courses.length;
     const totalCategories = new Set(courses.map(c => c.category).filter(Boolean)).size;
-    const enrolledCoursesCount = courses.filter(course => 
+    const enrolledCoursesCount = courses.filter(course =>
         course.students?.some(student => student._id === user?._id || student === user?._id)
     ).length;
 
@@ -89,7 +91,7 @@ const DashboardPage = () => {
                             Ready to continue your learning journey?
                         </p>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="bg-blue-50 rounded-lg p-5 border border-gray-200">
                             <div className="text-2xl font-semibold text-blue-600">{totalCourses}</div>
@@ -156,11 +158,10 @@ const DashboardPage = () => {
                             <button
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
-                                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                                    selectedCategory === category
-                                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                                        : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-                                }`}
+                                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${selectedCategory === category
+                                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                                    }`}
                             >
                                 {category}
                             </button>
@@ -183,8 +184,8 @@ const DashboardPage = () => {
                         </svg>
                         <h3 className="text-base font-semibold text-gray-900 mb-1">No courses found</h3>
                         <p className="text-sm text-gray-600">
-                            {searchQuery || selectedCategory !== 'All' 
-                                ? 'Try adjusting your search or filters' 
+                            {searchQuery || selectedCategory !== 'All'
+                                ? 'Try adjusting your search or filters'
                                 : 'No courses available at the moment'}
                         </p>
                         {(searchQuery || selectedCategory !== 'All') && (
@@ -250,99 +251,93 @@ const DashboardPage = () => {
 
             {/* Course Details Modal */}
             {selectedCourse && (
-                <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50 overflow-y-auto">
-                    <div className="bg-white rounded-2xl shadow-xl max-w-3xl w-full">
-                        <div className="relative bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-2xl border-b-2 border-blue-500 p-8">
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        {/* Header */}
+                        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 z-10">
                             <button
                                 onClick={() => setSelectedCourse(null)}
-                                className="absolute top-4 right-4 bg-white hover:bg-gray-50 text-gray-800 p-2 rounded-full transition-colors shadow-md"
+                                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                             >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
-                            <div className="flex justify-between items-start pr-12">
-                                <h2 className="text-3xl font-bold text-gray-900">{selectedCourse.title}</h2>
-                                <div className="bg-blue-600 text-white px-6 py-3 rounded-lg text-2xl font-bold shadow-lg whitespace-nowrap">
-                                    ${selectedCourse.price}
+                            <div className="pr-8">
+                                <h2 className="text-xl font-semibold text-blue-600 mb-2">{selectedCourse.title}</h2>
+                                <div className="flex items-center gap-3 text-sm text-gray-600">
+                                    <span>{selectedCourse.instructor?.name || 'Unknown'}</span>
+                                    <span>•</span>
+                                    <span>{selectedCourse.category}</span>
+                                    <span>•</span>
+                                    <span>{selectedCourse.level}</span>
                                 </div>
                             </div>
                         </div>
-                        <div className="p-8">
-                            <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-6">
+
+                        {/* Content */}
+                        <div className="p-6 space-y-6">
+                            {/* Meta Info */}
+                            <div className="flex items-center justify-between pb-6 border-b border-gray-100">
+                                <div className="flex items-center gap-6 text-sm">
+                                    <div>
+                                        <span className="text-gray-500">Students: </span>
+                                        <span className="font-medium text-gray-900">{selectedCourse.students?.length || 0}</span>
+                                    </div>
+                                    <div>
+                                        <span className="text-gray-500">Modules: </span>
+                                        <span className="font-medium text-gray-900">{selectedCourse.modules?.length || 0}</span>
+                                    </div>
+                                </div>
+                                <div className="text-2xl font-semibold text-blue-600">${selectedCourse.price}</div>
+                            </div>
+
+                            {/* Description */}
+                            <div>
+                                <h3 className="text-sm font-medium text-gray-900 mb-2">About</h3>
+                                <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{selectedCourse.description}</p>
+                            </div>
+
+                            {/* Modules */}
+                            {selectedCourse.modules && selectedCourse.modules.length > 0 && (
                                 <div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">{selectedCourse.category}</span>
-                                        <span className="text-sm text-gray-500 border border-gray-200 px-2.5 py-0.5 rounded-full">{selectedCourse.level}</span>
-                                        {selectedCourse.duration && (
-                                            <span className="text-sm text-gray-500 border border-gray-200 px-2.5 py-0.5 rounded-full">
-                                                ⏱️ {selectedCourse.duration}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <h2 className="text-3xl font-bold text-gray-900">{selectedCourse.title}</h2>
-                                    <p className="text-gray-500 mt-1">Instructor: {selectedCourse.instructor?.name || 'Unknown'}</p>
-                                </div>
-                                <div className="text-3xl font-bold text-blue-600">
-                                    ${selectedCourse.price}
-                                </div>
-                            </div>
-
-                            <div className="prose max-w-none text-gray-600 mb-8">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-2">About this Course</h3>
-                                <p className="whitespace-pre-line leading-relaxed mb-6">{selectedCourse.description}</p>
-
-                                <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <div className="bg-gray-50 p-3 rounded-lg text-center">
-                                        <div className="text-2xl font-bold text-gray-900">{selectedCourse.students?.length || 0}</div>
-                                        <div className="text-sm text-gray-500">Students Enrolled</div>
-                                    </div>
-                                    <div className="bg-gray-50 p-3 rounded-lg text-center">
-                                        <div className="text-2xl font-bold text-gray-900">{selectedCourse.modules?.length || 0}</div>
-                                        <div className="text-sm text-gray-500">Modules</div>
-                                    </div>
-                                </div>
-
-                                {selectedCourse.modules && selectedCourse.modules.length > 0 && (
-                                    <>
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-3">Course Curriculum</h3>
-                                        <div className="space-y-3">
-                                            {selectedCourse.modules.map((module, index) => (
-                                                <div key={index} className="p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                                                    <div className="flex justify-between items-start">
-                                                        <div className="flex-1">
-                                                            <div className="font-medium text-gray-900">Module {index + 1}: {module.title}</div>
-                                                            {module.description && (
-                                                                <p className="text-sm text-gray-600 mt-1">{module.description}</p>
-                                                            )}
-                                                        </div>
-                                                        {module.duration && (
-                                                            <span className="text-sm text-gray-500 ml-2">{module.duration}</span>
-                                                        )}
-                                                    </div>
+                                    <h3 className="text-sm font-medium text-gray-900 mb-3">Curriculum</h3>
+                                    <div className="space-y-2">
+                                        {selectedCourse.modules.map((module, index) => (
+                                            <div key={index} className="flex gap-3 p-3 hover:bg-gray-50 rounded transition-colors">
+                                                <span className="text-sm font-medium text-gray-400">{index + 1}.</span>
+                                                <div className="flex-1">
+                                                    <div className="text-sm font-medium text-gray-900">{module.title}</div>
+                                                    {module.description && (
+                                                        <p className="text-xs text-gray-500 mt-1">{module.description}</p>
+                                                    )}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </>
-                                )}
-                            </div>
+                                                {module.duration && (
+                                                    <span className="text-xs text-gray-400">{module.duration}</span>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
 
-                            <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                        {/* Footer */}
+                        <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex gap-3">
+                            <button
+                                onClick={() => setSelectedCourse(null)}
+                                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                            >
+                                Close
+                            </button>
+                            {user?.role !== 'instructor' && (
                                 <button
-                                    onClick={() => setSelectedCourse(null)}
-                                    className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                                    onClick={() => handleEnroll(selectedCourse._id)}
+                                    className="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition-colors"
                                 >
-                                    Close
+                                    Enroll Now
                                 </button>
-                                {user?.role !== 'instructor' && (
-                                    <button
-                                        onClick={() => handleEnroll(selectedCourse._id)}
-                                        className="px-6 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 shadow-sm transition-colors"
-                                    >
-                                        Enroll Now
-                                    </button>
-                                )}
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>

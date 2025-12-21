@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
+import toast from 'react-hot-toast';
+
 const CourseDetailsPage = () => {
     const { id: courseId } = useParams();
     const navigate = useNavigate();
@@ -53,14 +55,14 @@ const CourseDetailsPage = () => {
             };
             await axios.post(`http://127.0.0.1:5001/api/courses/${courseId}/enroll`, {}, config);
             setEnrolled(true);
-            alert("Enrollment successful!");
+            toast.success("Enrollment successful!");
         } catch (error) {
             console.error("Enrollment error:", error);
             const msg = error.response?.data?.message || "Enrollment failed";
             if (msg === 'Already enrolled in this course') {
                 setEnrolled(true);
             }
-            alert(msg);
+            toast.error(msg);
         }
     };
 

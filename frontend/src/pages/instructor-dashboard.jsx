@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
+import toast from 'react-hot-toast';
+
 const InstructorDashboard = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
@@ -103,18 +105,18 @@ const InstructorDashboard = () => {
             if (editingCourse) {
                 // Update
                 await axios.put(`http://127.0.0.1:5001/api/courses/${editingCourse._id}/update`, formData, config);
-                alert("Course updated successfully!");
+                toast.success("Course updated successfully!");
             } else {
                 // Create
                 await axios.post('http://127.0.0.1:5001/api/courses/create', formData, config);
-                alert("Course created successfully!");
+                toast.success("Course created successfully!");
             }
 
             setShowCourseModal(false);
             fetchInstructorCourses(); // Refresh list
         } catch (error) {
             console.error("Save course error:", error);
-            alert(error.response?.data?.message || "Failed to save course");
+            toast.error(error.response?.data?.message || "Failed to save course");
         }
     };
 
@@ -129,10 +131,10 @@ const InstructorDashboard = () => {
             };
             await axios.delete(`http://127.0.0.1:5001/api/courses/${courseId}/delete`, config);
             setMyCourses(myCourses.filter(c => c._id !== courseId));
-            alert("Course deleted successfully");
+            toast.success("Course deleted successfully");
         } catch (error) {
             console.error("Delete error:", error);
-            alert(error.response?.data?.message || "Failed to delete course");
+            toast.error(error.response?.data?.message || "Failed to delete course");
         }
     };
 
@@ -151,7 +153,7 @@ const InstructorDashboard = () => {
             setLoadingStudents(false);
         } catch (error) {
             console.error("Fetch students error:", error);
-            alert("Failed to load students");
+            toast.error("Failed to load students");
             setLoadingStudents(false);
             setShowStudentsModal(false);
         }

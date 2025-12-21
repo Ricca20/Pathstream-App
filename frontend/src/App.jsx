@@ -12,9 +12,12 @@ import EnrolledCoursesPage from './pages/enrolled-courses-page';
 import CourseDetailsPage from './pages/course-details-page';
 import './index.css';
 
+import { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />

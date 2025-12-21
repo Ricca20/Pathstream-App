@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
+import toast from 'react-hot-toast';
+
 const LoginPage = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -20,11 +22,12 @@ const LoginPage = () => {
             localStorage.setItem("userInfo", JSON.stringify(data));
             login(data);
             navigate('/home');
+            toast.success("Welcome back!");
         } catch (error) {
             console.error("Error:", error);
             // Alert more details if it's not a response error (e.g. Network Error)
             const msg = error.response?.data?.message || error.message || "Login failed";
-            alert(`Login Error: ${msg}`);
+            toast.error(msg);
         }
     };
 
