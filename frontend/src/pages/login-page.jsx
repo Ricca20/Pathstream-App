@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 import toast from 'react-hot-toast';
+import API_URL from '../config';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post("http://127.0.0.1:5001/api/auth/login", {
+            const { data } = await axios.post(`${API_URL}/api/auth/login`, {
                 email: email.trim(),
                 password: password.trim(),
             });

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from '../config'; // Added import for API_URL
 
 const Chatbot = ({ token }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +35,8 @@ const Chatbot = ({ token }) => {
                 },
             };
 
-            const response = await axios.post('http://127.0.0.1:5001/api/ai/recommend', { prompt: userMessage }, config);
+            // Replaced hardcoded URL with API_URL
+            const response = await axios.post(`${API_URL}/api/ai/recommend`, { prompt: userMessage }, config);
 
             const botMessage = response.data.message;
             const recommendations = response.data.recommendations || [];

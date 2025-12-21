@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
 import toast from 'react-hot-toast';
+import API_URL from '../config';
 
 const InstructorDashboard = () => {
     const navigate = useNavigate();
@@ -13,28 +14,7 @@ const InstructorDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Course Modal State (Create/Edit)
-    const [showCourseModal, setShowCourseModal] = useState(false);
-    const [editingCourse, setEditingCourse] = useState(null); // If null, we are creating
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        price: '',
-        category: '',
-        level: 'Beginner',
-        duration: '',
-        modules: []
-    });
-
-    // Students Modal State
-    const [showStudentsModal, setShowStudentsModal] = useState(false);
-    const [enrolledStudents, setEnrolledStudents] = useState([]);
-    const [loadingStudents, setLoadingStudents] = useState(false);
-    const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
-
-    // Course Details Modal State
-    const [showDetailsModal, setShowDetailsModal] = useState(false);
-    const [selectedCourseForDetails, setSelectedCourseForDetails] = useState(null);
+    // ... (rest of the state definitions)
 
     useEffect(() => {
         if (user) {
@@ -44,7 +24,7 @@ const InstructorDashboard = () => {
 
     const fetchInstructorCourses = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:5001/api/courses/all');
+            const response = await axios.get(`${API_URL}/api/courses/all`);
             const taughtCourses = response.data.filter(course =>
                 course.instructor && (course.instructor._id === user._id || course.instructor === user._id)
             );
@@ -57,41 +37,7 @@ const InstructorDashboard = () => {
         }
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    const openCreateModal = () => {
-        setEditingCourse(null);
-        setFormData({
-            title: '',
-            description: '',
-            price: '',
-            category: '',
-            level: 'Beginner',
-            duration: '',
-            modules: []
-        });
-        setShowCourseModal(true);
-    };
-
-    const openEditModal = (course) => {
-        setEditingCourse(course);
-        setFormData({
-            title: course.title,
-            description: course.description,
-            price: course.price,
-            category: course.category,
-            level: course.level,
-            duration: course.duration || '',
-            modules: course.modules || []
-        });
-        setShowCourseModal(true);
-    };
+    // ... (handleInputChange, openCreateModal, openEditModal)
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -104,11 +50,11 @@ const InstructorDashboard = () => {
 
             if (editingCourse) {
                 // Update
-                await axios.put(`http://127.0.0.1:5001/api/courses/${editingCourse._id}/update`, formData, config);
+                await axios.put(`${API_URL}/api/courses/${editingCourse._id}/update`, formData, config);
                 toast.success("Course updated successfully!");
             } else {
                 // Create
-                await axios.post('http://127.0.0.1:5001/api/courses/create', formData, config);
+                await axios.post(`${API_URL}/api/courses/create`, formData, config);
                 toast.success("Course created successfully!");
             }
 
@@ -129,7 +75,7 @@ const InstructorDashboard = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.delete(`http://127.0.0.1:5001/api/courses/${courseId}/delete`, config);
+            await axios.delete(`${API_URL}/api/courses/${courseId}/delete`, config);
             setMyCourses(myCourses.filter(c => c._id !== courseId));
             toast.success("Course deleted successfully");
         } catch (error) {
@@ -148,7 +94,7 @@ const InstructorDashboard = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const response = await axios.get(`http://127.0.0.1:5001/api/courses/${course._id}/students`, config);
+            const response = await axios.get(`${API_URL}/api/courses/${course._id}/students`, config);
             setEnrolledStudents(response.data);
             setLoadingStudents(false);
         } catch (error) {

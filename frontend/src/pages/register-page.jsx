@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import toast from 'react-hot-toast';
+import API_URL from '../config';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const RegisterPage = () => {
         }
 
         try {
-            const { data } = await axios.post("http://127.0.0.1:5001/api/auth/register", {
+            const { data } = await axios.post(`${API_URL}/api/auth/register`, {
                 name,
                 email,
                 password,

@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Chatbot from '../components/Chatbot';
 
 import toast from 'react-hot-toast';
+import API_URL from '../config';
 
 const DashboardPage = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const DashboardPage = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5001/api/courses/all');
+                const response = await axios.get(`${API_URL}/api/courses/all`);
                 setCourses(response.data);
                 setLoading(false);
             } catch (err) {
@@ -40,7 +41,7 @@ const DashboardPage = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.post(`http://127.0.0.1:5001/api/courses/${courseId}/enroll`, {}, config);
+            await axios.post(`${API_URL}/api/courses/${courseId}/enroll`, {}, config);
             toast.success("Enrollment successful!");
             setSelectedCourse(null); // Close modal if open
         } catch (error) {

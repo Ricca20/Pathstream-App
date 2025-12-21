@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 
 import toast from 'react-hot-toast';
+import API_URL from '../config';
 
 const CourseDetailsPage = () => {
     const { id: courseId } = useParams();
@@ -25,7 +26,7 @@ const CourseDetailsPage = () => {
                 };
 
                 // Fetch course details
-                const response = await axios.get(`http://127.0.0.1:5001/api/courses/${courseId}/details`, config);
+                const response = await axios.get(`${API_URL}/api/courses/${courseId}/details`, config);
                 setCourse(response.data);
 
                 // Check if user is already enrolled
@@ -53,7 +54,7 @@ const CourseDetailsPage = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.post(`http://127.0.0.1:5001/api/courses/${courseId}/enroll`, {}, config);
+            await axios.post(`${API_URL}/api/courses/${courseId}/enroll`, {}, config);
             setEnrolled(true);
             toast.success("Enrollment successful!");
         } catch (error) {

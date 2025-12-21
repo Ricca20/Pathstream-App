@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
+import API_URL from '../config';
 
 const EnrolledCoursesPage = () => {
     const navigate = useNavigate();
@@ -10,6 +11,8 @@ const EnrolledCoursesPage = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const onBackToDashboard = () => navigate('/courses');
 
     useEffect(() => {
         const fetchEnrolledCourses = async () => {
@@ -19,7 +22,7 @@ const EnrolledCoursesPage = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                const response = await axios.get('http://127.0.0.1:5001/api/courses/my-courses', config);
+                const response = await axios.get(`${API_URL}/api/courses/my-courses`, config);
                 setCourses(response.data);
                 setLoading(false);
             } catch (err) {
@@ -29,8 +32,10 @@ const EnrolledCoursesPage = () => {
             }
         };
 
-        fetchEnrolledCourses();
-    }, [user.token]);
+        if (user) {
+            fetchEnrolledCourses();
+        }
+    }, [user]);
 
     return (
         <div className="min-h-screen bg-gray-50">
