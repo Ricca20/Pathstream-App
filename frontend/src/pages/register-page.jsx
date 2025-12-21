@@ -21,6 +21,7 @@ const RegisterPage = () => {
         }
 
         try {
+            console.log("Registering with API URL:", API_URL); // Debugging
             const { data } = await axios.post(`${API_URL}/api/auth/register`, {
                 name,
                 email,
