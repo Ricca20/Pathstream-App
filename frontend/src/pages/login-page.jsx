@@ -25,8 +25,6 @@ const LoginPage = () => {
             navigate('/home');
             toast.success("Welcome back!");
         } catch (error) {
-            console.error("Error:", error);
-            // Alert more details if it's not a response error (e.g. Network Error)
             const msg = error.response?.data?.message || error.message || "Login failed";
             toast.error(msg);
         }

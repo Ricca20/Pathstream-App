@@ -12,7 +12,6 @@ import {
 } from '../controllers/courseController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
-
 router.get('/all', getCourses);
 router.post('/create', protect, createCourse);
 router.get('/my-courses', protect, getMyEnrolledCourses);

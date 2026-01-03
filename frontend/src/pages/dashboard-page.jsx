@@ -25,7 +25,6 @@ const DashboardPage = () => {
                 setCourses(response.data);
                 setLoading(false);
             } catch (err) {
-                console.error("Error fetching courses:", err);
                 setError("Failed to load courses. Please check your connection.");
                 setLoading(false);
             }
@@ -43,9 +42,7 @@ const DashboardPage = () => {
             };
             await axios.post(`${API_URL}/api/courses/${courseId}/enroll`, {}, config);
             toast.success("Enrollment successful!");
-            setSelectedCourse(null); // Close modal if open
         } catch (error) {
-            console.error("Enrollment error:", error);
             const msg = error.response?.data?.message || "Enrollment failed";
             toast.error(msg);
         }

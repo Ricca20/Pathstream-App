@@ -5,7 +5,6 @@ import toast from 'react-hot-toast';
 import API_URL from '../config';
 import InputField from '../components/InputField';
 
-// Icons
 const UserIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}>
         <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
@@ -55,7 +54,6 @@ const RegisterPage = () => {
             toast.error("Password must be at least 6 characters");
             return false;
         }
-        // Basic email structure check (HTML5 type="email" handles most, but good to have)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email.match(emailRegex)) {
             toast.error("Please enter a valid email address");
@@ -84,7 +82,6 @@ const RegisterPage = () => {
         } catch (error) {
             console.error("Error:", error);
             if (!error.response) {
-                // Network error (server down, cors, etc)
                 toast.error("Unable to connect to server. Please check your connection.");
             } else {
                 toast.error(error.response?.data?.message || "Registration failed");

@@ -1,12 +1,30 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from '../../config';
+
+const StatCard = ({ title, value, icon, color }) => (
+    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="flex items-center gap-4">
+            <div className={`p-3 rounded-lg ${color}`}>
+                {icon}
+            </div>
+            <div>
+                <p className="text-sm text-gray-500 font-medium">{title}</p>
+                <h3 className="text-2xl font-bold text-gray-900">{value}</h3>
+            </div>
+        </div>
+    </div>
+);
 
 const InstructorStatisticsSection = ({ userId, token }) => {
     const [stats, setStats] = useState({
         totalCourses: 0,
         totalStudents: 0,
-        totalModules: 0
+        totalModules: 0,
+        totalRevenue: 0,
+        averageRating: 0
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchInstructorStats = async () => {
@@ -16,9 +34,8 @@ const InstructorStatisticsSection = ({ userId, token }) => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get('http://127.0.0.1:5001/api/courses/all', config);
+                const response = await axios.get(`${API_URL}/api/courses/all`, config);
 
-                // Filter courses taught by this instructor
                 const instructorCourses = response.data.filter(course =>
                     course.instructor && (course.instructor._id === userId || course.instructor === userId)
                 );
@@ -32,9 +49,25 @@ const InstructorStatisticsSection = ({ userId, token }) => {
                     sum + (course.modules?.length || 0), 0
                 );
 
-                setStats({ totalCourses, totalStudents, totalModules });
+                // Calculate revenue based on price * students for each course
+                const totalRevenue = instructorCourses.reduce((sum, course) =>
+                    sum + (course.price * (course.students?.length || 0)), 0
+                );
+
+                // Default rating to 0 since it's not in the model yet
+                const averageRating = 0;
+
+                setStats({
+                    totalCourses,
+                    totalStudents,
+                    totalModules,
+                    totalRevenue,
+                    averageRating
+                });
+                setLoading(false);
             } catch (err) {
                 console.error("Error fetching instructor stats:", err);
+                setLoading(false);
             }
         };
 

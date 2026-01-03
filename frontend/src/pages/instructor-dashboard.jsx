@@ -31,13 +31,11 @@ const InstructorDashboard = () => {
             setMyCourses(taughtCourses);
             setLoading(false);
         } catch (err) {
-            console.error("Error fetching courses:", err);
             setError("Failed to load your courses.");
             setLoading(false);
         }
     };
 
-    // ... (handleInputChange, openCreateModal, openEditModal)
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -49,19 +47,16 @@ const InstructorDashboard = () => {
             };
 
             if (editingCourse) {
-                // Update
                 await axios.put(`${API_URL}/api/courses/${editingCourse._id}/update`, formData, config);
                 toast.success("Course updated successfully!");
             } else {
-                // Create
                 await axios.post(`${API_URL}/api/courses/create`, formData, config);
                 toast.success("Course created successfully!");
             }
 
             setShowCourseModal(false);
-            fetchInstructorCourses(); // Refresh list
+            fetchInstructorCourses();
         } catch (error) {
-            console.error("Save course error:", error);
             toast.error(error.response?.data?.message || "Failed to save course");
         }
     };
@@ -79,7 +74,6 @@ const InstructorDashboard = () => {
             setMyCourses(myCourses.filter(c => c._id !== courseId));
             toast.success("Course deleted successfully");
         } catch (error) {
-            console.error("Delete error:", error);
             toast.error(error.response?.data?.message || "Failed to delete course");
         }
     };
@@ -98,7 +92,6 @@ const InstructorDashboard = () => {
             setEnrolledStudents(response.data);
             setLoadingStudents(false);
         } catch (error) {
-            console.error("Fetch students error:", error);
             toast.error("Failed to load students");
             setLoadingStudents(false);
             setShowStudentsModal(false);
