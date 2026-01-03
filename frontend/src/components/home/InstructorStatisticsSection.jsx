@@ -21,7 +21,6 @@ const InstructorStatisticsSection = ({ userId, token }) => {
         totalCourses: 0,
         totalStudents: 0,
         totalModules: 0,
-        totalRevenue: 0,
         averageRating: 0
     });
     const [loading, setLoading] = useState(true);
@@ -49,11 +48,6 @@ const InstructorStatisticsSection = ({ userId, token }) => {
                     sum + (course.modules?.length || 0), 0
                 );
 
-                // Calculate revenue based on price * students for each course
-                const totalRevenue = instructorCourses.reduce((sum, course) =>
-                    sum + (course.price * (course.students?.length || 0)), 0
-                );
-
                 // Default rating to 0 since it's not in the model yet
                 const averageRating = 0;
 
@@ -61,7 +55,6 @@ const InstructorStatisticsSection = ({ userId, token }) => {
                     totalCourses,
                     totalStudents,
                     totalModules,
-                    totalRevenue,
                     averageRating
                 });
                 setLoading(false);
@@ -106,16 +99,6 @@ const InstructorStatisticsSection = ({ userId, token }) => {
                 </svg>
             ),
             color: "bg-purple-50"
-        },
-        {
-            label: "Total Revenue",
-            value: `$${stats.totalRevenue.toFixed(2)}`,
-            icon: (
-                <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-            ),
-            color: "bg-yellow-50"
         },
         {
             label: "Average Rating",
