@@ -22,6 +22,7 @@ const LoginPage = () => {
 
             localStorage.setItem("userInfo", JSON.stringify(data));
             login(data);
+
             navigate('/home');
             toast.success("Welcome back!");
         } catch (error) {

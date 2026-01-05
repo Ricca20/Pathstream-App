@@ -16,58 +16,64 @@ const StatCard = ({ title, value, icon, color }) => (
     </div>
 );
 
-const InstructorStatisticsSection = ({ userId, token }) => {
+const InstructorStatisticsSection = ({ courses, userId, token }) => {
     const [stats, setStats] = useState({
         totalCourses: 0,
         totalStudents: 0,
         totalModules: 0,
         averageRating: 0
     });
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!courses);
 
     useEffect(() => {
-        const fetchInstructorStats = async () => {
-            try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
-                const response = await axios.get(`${API_URL}/api/courses/all`, config);
-
-                const instructorCourses = response.data.filter(course =>
-                    course.instructor && (course.instructor._id === userId || course.instructor === userId)
-                );
-
-                // Calculate statistics
-                const totalCourses = instructorCourses.length;
-                const totalStudents = instructorCourses.reduce((sum, course) =>
-                    sum + (course.students?.length || 0), 0
-                );
-                const totalModules = instructorCourses.reduce((sum, course) =>
-                    sum + (course.modules?.length || 0), 0
-                );
-
-                // Default rating to 0 since it's not in the model yet
-                const averageRating = 0;
-
-                setStats({
-                    totalCourses,
-                    totalStudents,
-                    totalModules,
-                    averageRating
-                });
-                setLoading(false);
-            } catch (err) {
-                console.error("Error fetching instructor stats:", err);
-                setLoading(false);
-            }
-        };
-
-        if (userId && token) {
+        if (courses) {
+            calculateStats(courses);
+            setLoading(false);
+        } else if (userId && token) {
             fetchInstructorStats();
         }
-    }, [userId, token]);
+    }, [courses, userId, token]);
+
+    const fetchInstructorStats = async () => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            const response = await axios.get(`${API_URL}/api/courses/all`, config);
+
+            const instructorCourses = response.data.filter(course =>
+                course.instructor && (course.instructor._id === userId || course.instructor === userId)
+            );
+            calculateStats(instructorCourses);
+        } catch (err) {
+            console.error("Error fetching instructor stats:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const calculateStats = (instructorCourses) => {
+        // Calculate statistics
+        const totalCourses = instructorCourses.length;
+        const totalStudents = instructorCourses.reduce((sum, course) =>
+            sum + (course.students?.length || 0), 0
+        );
+        const totalModules = instructorCourses.reduce((sum, course) =>
+            sum + (course.modules?.length || 0), 0
+        );
+
+        // Default rating to 0 since it's not in the model yet
+        const averageRating = 0;
+
+        setStats({
+            totalCourses,
+            totalStudents,
+            totalModules,
+            averageRating
+        });
+    };
 
     const statsData = [
         {
@@ -113,9 +119,7 @@ const InstructorStatisticsSection = ({ userId, token }) => {
     ];
 
     if (loading) {
-        return (
-            <div className="mb-16 text-center text-gray-600">Loading your teaching impact...</div>
-        );
+        return <div className="text-center py-8">Loading stats...</div>;
     }
 
     return (

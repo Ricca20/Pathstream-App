@@ -17,6 +17,8 @@ import InstructorCTASection from '../components/home/InstructorCTASection';
 import InstructorStatisticsSection from '../components/home/InstructorStatisticsSection';
 import InstructorFooterMessage from '../components/home/InstructorFooterMessage';
 
+
+
 const HomePage = () => {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
@@ -39,11 +41,11 @@ const HomePage = () => {
                     <>
                         {/* Instructor Home Page Content */}
                         <InstructorHeroSection />
-                        <InstructorFeaturesSection />
                         <InstructorStatisticsSection
                             userId={user?._id}
                             token={user?.token}
                         />
+                        <InstructorFeaturesSection />
                         <InstructorCTASection
                             onViewInstructorDashboard={() => navigate('/instructor-dashboard')}
                         />

@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
+import InstructorStatisticsSection from '../components/home/InstructorStatisticsSection';
+import InstructorHeroSection from '../components/home/InstructorHeroSection';
+import InstructorFeaturesSection from '../components/home/InstructorFeaturesSection';
+import InstructorCTASection from '../components/home/InstructorCTASection';
+import InstructorFooterMessage from '../components/home/InstructorFooterMessage';
 
 import toast from 'react-hot-toast';
 import API_URL from '../config';
@@ -14,7 +19,61 @@ const InstructorDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // ... (rest of the state definitions)
+    const [showCourseModal, setShowCourseModal] = useState(false);
+    const [editingCourse, setEditingCourse] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        price: '',
+        category: '',
+        level: 'Beginner',
+        duration: '',
+        modules: []
+    });
+    const [showStudentsModal, setShowStudentsModal] = useState(false);
+    const [selectedCourseTitle, setSelectedCourseTitle] = useState('');
+    const [enrolledStudents, setEnrolledStudents] = useState([]);
+    const [loadingStudents, setLoadingStudents] = useState(false);
+
+    // Details modal state
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const [selectedCourseForDetails, setSelectedCourseForDetails] = useState(null);
+
+    const openCreateModal = () => {
+        setEditingCourse(null);
+        setFormData({
+            title: '',
+            description: '',
+            price: '',
+            category: '',
+            level: 'Beginner',
+            duration: '',
+            modules: []
+        });
+        setShowCourseModal(true);
+    };
+
+    const openEditModal = (course) => {
+        setEditingCourse(course);
+        setFormData({
+            title: course.title,
+            description: course.description,
+            price: course.price,
+            category: course.category,
+            level: course.level,
+            duration: course.duration,
+            modules: course.modules || []
+        });
+        setShowCourseModal(true);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     useEffect(() => {
         if (user) {
@@ -117,7 +176,12 @@ const InstructorDashboard = () => {
 
             {/* Content */}
             <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+
+
+
+
+
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4 mt-12">
                     <div>
                         <h2 className="text-3xl font-bold text-gray-900">My Courses</h2>
                         <p className="mt-1 text-gray-500">Manage your course content and students.</p>
@@ -200,6 +264,9 @@ const InstructorDashboard = () => {
                         ))}
                     </div>
                 )}
+
+
+
             </main>
 
             {/* Create/Edit Course Modal */}
