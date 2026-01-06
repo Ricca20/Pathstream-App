@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
-import InstructorStatisticsSection from '../components/home/InstructorStatisticsSection';
-import InstructorHeroSection from '../components/home/InstructorHeroSection';
-import InstructorFeaturesSection from '../components/home/InstructorFeaturesSection';
-import InstructorCTASection from '../components/home/InstructorCTASection';
-import InstructorFooterMessage from '../components/home/InstructorFooterMessage';
+import { useAuth } from '../../context/AuthContext';
+import Navbar from '../../components/common/Navbar';
+import InstructorStatisticsSection from '../../components/home/InstructorStatisticsSection';
+import InstructorHeroSection from '../../components/home/InstructorHeroSection';
+import InstructorFeaturesSection from '../../components/home/InstructorFeaturesSection';
+import InstructorCTASection from '../../components/home/InstructorCTASection';
+import InstructorFooterMessage from '../../components/home/InstructorFooterMessage';
 
 import toast from 'react-hot-toast';
-import API_URL from '../config';
+import API_URL from '../../config';
 
 const InstructorDashboard = () => {
     const navigate = useNavigate();
@@ -177,9 +177,7 @@ const InstructorDashboard = () => {
             {/* Content */}
             <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
 
-
-
-
+                <InstructorStatisticsSection courses={myCourses} />
 
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4 mt-12">
                     <div>

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
+import { useAuth } from '../../context/AuthContext';
+import Navbar from '../../components/common/Navbar';
 
 import toast from 'react-hot-toast';
-import API_URL from '../config';
+import API_URL from '../../config';
 
 const CourseDetailsPage = () => {
     const { id: courseId } = useParams();

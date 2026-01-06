@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
-import Chatbot from '../components/Chatbot';
+import { useAuth } from '../../context/AuthContext';
+import Navbar from '../../components/common/Navbar';
+import Chatbot from '../../components/common/Chatbot';
 
 import toast from 'react-hot-toast';
-import API_URL from '../config';
+import API_URL from '../../config';
 
 const DashboardPage = () => {
     const navigate = useNavigate();

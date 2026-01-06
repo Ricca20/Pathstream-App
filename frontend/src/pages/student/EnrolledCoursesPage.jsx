@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
-import API_URL from '../config';
+import { useAuth } from '../../context/AuthContext';
+import Navbar from '../../components/common/Navbar';
+import API_URL from '../../config';
 
 const EnrolledCoursesPage = () => {
     const navigate = useNavigate();

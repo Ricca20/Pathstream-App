@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import API_URL from '../config';
-import InputField from '../components/InputField';
+import API_URL from '../../config';
+import InputField from '../../components/common/InputField';
 
 const UserIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}>

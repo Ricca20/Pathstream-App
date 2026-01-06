@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/Navbar';
 
 // Student Components
 import LearningJourney from '../components/home/LearningJourney';
@@ -14,7 +14,7 @@ import FooterMessage from '../components/home/FooterMessage';
 import InstructorHeroSection from '../components/home/InstructorHeroSection';
 import InstructorFeaturesSection from '../components/home/InstructorFeaturesSection';
 import InstructorCTASection from '../components/home/InstructorCTASection';
-import InstructorStatisticsSection from '../components/home/InstructorStatisticsSection';
+
 import InstructorFooterMessage from '../components/home/InstructorFooterMessage';
 
 
@@ -41,10 +41,7 @@ const HomePage = () => {
                     <>
                         {/* Instructor Home Page Content */}
                         <InstructorHeroSection />
-                        <InstructorStatisticsSection
-                            userId={user?._id}
-                            token={user?.token}
-                        />
+
                         <InstructorFeaturesSection />
                         <InstructorCTASection
                             onViewInstructorDashboard={() => navigate('/instructor-dashboard')}

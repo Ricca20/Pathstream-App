@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 import toast from 'react-hot-toast';
-import API_URL from '../config';
+import API_URL from '../../config';
 
 const LoginPage = () => {
     const navigate = useNavigate();
